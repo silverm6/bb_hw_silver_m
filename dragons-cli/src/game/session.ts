@@ -1,4 +1,4 @@
-import { getAds, getShopItems, purchaseItem, solveMessage, startGame } from '../api/client.ts';
+import type { APIClient } from '../api/client.ts';
 import type { Message, ShopItem } from '../api/types.ts';
 import { logger } from '../logger.ts';
 
@@ -19,9 +19,9 @@ export interface GameSession {
   buy(itemId: string): Promise<boolean>;
 }
 
-export async function startGameSession(): Promise<GameSession> {
+export async function startGameSession(client: APIClient): Promise<GameSession> {
   logger.info('Starting a new game...');
-  const game = await startGame();
+  const game = await client.startGame();
 
   let state: GameState = {
     lives: game.lives,
@@ -38,13 +38,13 @@ export async function startGameSession(): Promise<GameSession> {
       return { ...state };
     },
     ads() {
-      return getAds(game.gameId);
+      return client.getAds(game.gameId);
     },
     shop() {
-      return getShopItems(game.gameId);
+      return client.getShopItems(game.gameId);
     },
     async solve(adId) {
-      const result = await solveMessage(game.gameId, adId);
+      const result = await client.solveMessage(game.gameId, adId);
 
       state = {
         ...state,
@@ -57,7 +57,7 @@ export async function startGameSession(): Promise<GameSession> {
       return result.message;
     },
     async buy(itemId) {
-      const result = await purchaseItem(game.gameId, itemId);
+      const result = await client.purchaseItem(game.gameId, itemId);
 
       state = {
         ...state,

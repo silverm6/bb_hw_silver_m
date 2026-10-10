@@ -1,5 +1,7 @@
 import { parseArgs } from 'node:util';
 
+import { createAPIClient } from './src/api/client.ts';
+import { loadConfig } from './src/config.ts';
 import { gameLoop } from './src/game/play.ts';
 import { startGameSession } from './src/game/session.ts';
 import { adStrategies } from './src/game/strategies/ads.ts';
@@ -24,5 +26,8 @@ if (adStrategy === undefined || shopStrategy === undefined) {
   process.exit(1);
 }
 
-const session = await startGameSession();
+const config = loadConfig(process.env);
+const client = createAPIClient(config);
+const session = await startGameSession(client);
+
 await gameLoop(session, adStrategy, shopStrategy);
