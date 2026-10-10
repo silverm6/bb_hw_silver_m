@@ -1,11 +1,16 @@
 {
   "name": "dom",
-  "type": "module",
   "private": true,
-  "workspaces": ["dragons-cli", "dragons-web"],
+  "workspaces": [
+    "dragons-cli",
+    "dragons-web"
+  ],
+  "type": "module",
   "scripts": {
     "lint": "oxlint",
-    "fmt": "oxfmt"
+    "fmt": "oxfmt",
+    "typecheck": "bun --filter '*' typecheck",
+    "test": "bun run typecheck && oxfmt --check"
   },
   "devDependencies": {
     "oxfmt": "^0.71.0",
