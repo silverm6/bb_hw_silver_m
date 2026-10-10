@@ -5,7 +5,13 @@
   "module": "index.ts",
   "scripts": {
     "start": "bun index.ts",
-    "typecheck": "tsc --noEmit"
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "oxfmt --check",
+    "fmt:fix": "oxfmt",
+    "typecheck": "tsc --noEmit",
+    "test": "bun run lint && bun run fmt && bun run typecheck",
+    "fix": "bun run lint:fix && bun run fmt:fix"
   },
   "dependencies": {
     "consola": "^3.4.2",

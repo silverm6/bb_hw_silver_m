@@ -4,7 +4,7 @@ import * as v from 'valibot';
 
 import { config } from '../config.ts';
 import { logger } from '../logger.ts';
-import { decryptMessage } from './decodeAd.ts';
+import { decryptMessage } from './decode_ad.ts';
 import { APIError } from './error.ts';
 import {
   GameSchema,
