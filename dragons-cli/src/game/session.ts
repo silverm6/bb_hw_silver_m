@@ -1,5 +1,5 @@
 import { getAds, getShopItems, purchaseItem, solveMessage, startGame } from '../api/client.ts';
-import type { Message, PurchaseResult, ShopItem, SolveResult } from '../api/types.ts';
+import type { Message, ShopItem } from '../api/types.ts';
 import { logger } from '../logger.ts';
 
 export interface GameState {
@@ -15,8 +15,8 @@ export interface GameSession {
   state(): GameState;
   ads(): Promise<Message[]>;
   shop(): Promise<ShopItem[]>;
-  solve(adId: string): Promise<SolveResult>;
-  buy(itemId: string): Promise<PurchaseResult>;
+  solve(adId: string): Promise<string>;
+  buy(itemId: string): Promise<boolean>;
 }
 
 export async function startGameSession(): Promise<GameSession> {
@@ -54,7 +54,7 @@ export async function startGameSession(): Promise<GameSession> {
         turn: result.turn,
       };
 
-      return result;
+      return result.message;
     },
     async buy(itemId) {
       const result = await purchaseItem(game.gameId, itemId);
@@ -67,7 +67,7 @@ export async function startGameSession(): Promise<GameSession> {
         turn: result.turn,
       };
 
-      return result;
+      return result.shoppingSuccess;
     },
   };
 }
