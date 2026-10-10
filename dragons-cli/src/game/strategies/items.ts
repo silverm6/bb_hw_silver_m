@@ -15,14 +15,16 @@ function pickMostExpensiveItem(items: ShopItem[], state: GameState) {
 }
 
 function pickOptimalItem(items: ShopItem[], state: GameState) {
-  const potion = items.find((item) => item.id === HEALING_POTION_API_ID)!;
-  if (state.lives === 1 && potion.cost <= state.gold) {
+  const potion = items.find((item) => item.id === HEALING_POTION_API_ID);
+  if (potion !== undefined && state.lives === 1 && potion.cost <= state.gold) {
     return potion;
   }
 
+  const potionCost = potion?.cost ?? 0;
+
   return items
     .filter((item) => item.id !== HEALING_POTION_API_ID)
-    .filter((item) => item.cost <= state.gold - potion.cost) // 1. keep only items you can afford while keeping enough for a potion
+    .filter((item) => item.cost <= state.gold - potionCost) // 1. keep only items you can afford while keeping enough for a potion
     .toSorted((a, b) => b.cost - a.cost)[0]; // 2. sort by most expensive first
 }
 

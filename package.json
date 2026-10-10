@@ -12,7 +12,7 @@
     "fmt": "bun run --cwd dragons-cli fmt",
     "fmt:fix": "bun run --cwd dragons-cli fmt:fix",
     "typecheck": "bun run --cwd dragons-cli typecheck",
-    "test": "bun run --cwd dragons-cli test",
+    "check": "bun run --cwd dragons-cli check",
     "fix": "bun run --cwd dragons-cli fix"
   },
   "devDependencies": {
