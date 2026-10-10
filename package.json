@@ -7,13 +7,13 @@
   ],
   "type": "module",
   "scripts": {
-    "lint": "bun run --cwd dragons-cli lint",
-    "lint:fix": "bun run --cwd dragons-cli lint:fix",
-    "fmt": "bun run --cwd dragons-cli fmt",
-    "fmt:fix": "bun run --cwd dragons-cli fmt:fix",
-    "typecheck": "bun run --cwd dragons-cli typecheck",
-    "check": "bun run --cwd dragons-cli check",
-    "fix": "bun run --cwd dragons-cli fix"
+    "lint": "bun run --cwd dragons-cli lint && bun run --cwd dragons-web lint",
+    "lint:fix": "bun run --cwd dragons-cli lint:fix && bun run --cwd dragons-web lint:fix",
+    "fmt": "bun run --cwd dragons-cli fmt && bun run --cwd dragons-web fmt",
+    "fmt:fix": "bun run --cwd dragons-cli fmt:fix && bun run --cwd dragons-web fmt:fix",
+    "typecheck": "bun run --cwd dragons-cli typecheck && bun run --cwd dragons-web typecheck",
+    "check": "bun run --cwd dragons-cli check && bun run --cwd dragons-web check",
+    "fix": "bun run --cwd dragons-cli fix && bun run --cwd dragons-web fix"
   },
   "devDependencies": {
     "oxfmt": "^0.71.0",
