@@ -1,52 +1,69 @@
-export type Game = {
-  gameId: string;
-  lives: number;
-  gold: number;
-  level: number;
-  score: number;
-  highScore: number;
-  turn: number;
-};
+import * as v from 'valibot';
 
-export type Reputation = {
-  people: number;
-  state: number;
-  underworld: number;
-};
+// Unknown fields are stripped, so new fields from the API don't break parsing.
 
-export type SolveMessage = {
-  success: boolean;
-  lives: number;
-  gold: number;
-  score: number;
-  highScore: number;
-  turn: number;
-  message: string;
-};
+export const GameSchema = v.object({
+  gameId: v.string(),
+  lives: v.number(),
+  gold: v.number(),
+  level: v.number(),
+  score: v.number(),
+  highScore: v.number(),
+  turn: v.number(),
+});
+export type Game = v.InferOutput<typeof GameSchema>;
+
+export const ReputationSchema = v.object({
+  people: v.number(),
+  state: v.number(),
+  underworld: v.number(),
+});
+export type Reputation = v.InferOutput<typeof ReputationSchema>;
+
+export const SolveResultSchema = v.object({
+  success: v.boolean(),
+  lives: v.number(),
+  gold: v.number(),
+  score: v.number(),
+  highScore: v.number(),
+  turn: v.number(),
+  message: v.string(),
+});
+export type SolveResult = v.InferOutput<typeof SolveResultSchema>;
+
+// Ad as sent by the API: adId, message and probability may be encoded.
+export const RawMessageSchema = v.object({
+  adId: v.string(),
+  message: v.string(),
+  reward: v.number(),
+  expiresIn: v.number(),
+  encrypted: v.nullable(v.number()),
+  probability: v.string(),
+});
+export type RawMessage = v.InferOutput<typeof RawMessageSchema>;
 
 export type Message = {
   adId: string;
   message: string;
   reward: number;
   expiresIn: number;
-  encrypted: number | null;
   probability: string;
 };
-export type Messages = Message[];
 
-export type ShopItem = {
-  id: string;
-  name: string;
-  cost: number;
-};
-export type ShopItems = ShopItem[];
+export const ShopItemSchema = v.object({
+  id: v.string(),
+  name: v.string(),
+  cost: v.number(),
+});
+export type ShopItem = v.InferOutput<typeof ShopItemSchema>;
 
-export const HEALING_POTION_ID = "hpot";
+export const PurchaseResultSchema = v.object({
+  shoppingSuccess: v.boolean(),
+  gold: v.number(),
+  lives: v.number(),
+  level: v.number(),
+  turn: v.number(),
+});
+export type PurchaseResult = v.InferOutput<typeof PurchaseResultSchema>;
 
-export type PurchaseItem = {
-  shoppingSuccess: boolean;
-  gold: number;
-  lives: number;
-  level: number;
-  turn: number;
-};
+export const HEALING_POTION_API_ID = 'hpot';

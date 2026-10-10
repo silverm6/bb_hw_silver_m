@@ -1,3 +1,3 @@
-import { createConsola } from "consola";
+import { createConsola } from 'consola';
 
-export const logger = createConsola({ stdout: process.stderr });
+export const logger = createConsola();
