@@ -1,6 +1,6 @@
 import { describe, expect, it, mock } from 'bun:test';
 
-import type { Message, ShopItem } from '../../api/types.ts';
+import type { Message, ShopItem } from 'dragons-api/types';
 import { gameLoop } from '../play.ts';
 import type { GameSession, GameState } from '../session.ts';
 

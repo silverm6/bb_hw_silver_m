@@ -1,6 +1,6 @@
 import { parseArgs } from 'node:util';
 
-import { createAPIClient } from './src/api/client.ts';
+import { createAPIClient } from 'dragons-api/client';
 import { loadConfig } from './src/config.ts';
 import { gameLoop } from './src/game/play.ts';
 import { startGameSession } from './src/game/session.ts';
@@ -27,7 +27,7 @@ if (adStrategy === undefined || shopStrategy === undefined) {
 }
 
 const config = loadConfig(process.env);
-const client = createAPIClient(config);
+const client = createAPIClient({ apiURL: config.apiURL, logger });
 const session = await startGameSession(client);
 
 await gameLoop(session, adStrategy, shopStrategy);

@@ -11,6 +11,7 @@
   "rules": {
     "react/rules-of-hooks": "error",
     "react/only-export-components": "warn",
-    "react/react-in-jsx-scope": "off"
+    "react/react-in-jsx-scope": "off",
+    "react-perf/jsx-no-new-function-as-prop": ["warn", { "nativeAllowList": "all" }]
   }
 }

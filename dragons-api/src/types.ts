@@ -1,7 +1,5 @@
 import * as v from 'valibot';
 
-// Unknown fields are stripped, so new fields from the API don't break parsing.
-
 export const GameSchema = v.object({
   gameId: v.string(),
   lives: v.number(),
@@ -67,3 +65,5 @@ export const PurchaseResultSchema = v.object({
 export type PurchaseResult = v.InferOutput<typeof PurchaseResultSchema>;
 
 export const HEALING_POTION_API_ID = 'hpot';
+
+export type Logger = Pick<Console, 'debug' | 'info' | 'warn' | 'error'>;

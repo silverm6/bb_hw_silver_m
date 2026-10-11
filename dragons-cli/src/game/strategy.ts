@@ -1,4 +1,4 @@
-import type { Message, ShopItem } from '../api/types.ts';
+import type { Message, ShopItem } from 'dragons-api/types';
 import type { GameState } from './session.ts';
 
 export interface AdStrategy {

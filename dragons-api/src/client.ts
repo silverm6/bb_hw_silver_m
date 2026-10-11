@@ -1,9 +1,5 @@
-import { setTimeout as sleep } from 'node:timers/promises';
-
 import * as v from 'valibot';
 
-import type { Config } from '../config.ts';
-import { logger } from '../logger.ts';
 import { decryptMessage } from './decode_ad.ts';
 import { APIError } from './error.ts';
 import {
@@ -14,6 +10,7 @@ import {
   ShopItemSchema,
   SolveResultSchema,
   type Game,
+  type Logger,
   type Message,
   type PurchaseResult,
   type Reputation,
@@ -35,7 +32,12 @@ export interface APIClient {
   startGame(): Promise<Game>;
 }
 
-export function createAPIClient(config: Config): APIClient {
+export interface APIClientOptions {
+  apiURL: string;
+  logger: Logger;
+}
+
+export function createAPIClient({ apiURL, logger }: APIClientOptions): APIClient {
   // One retry for GET requests in case of transient errors.
   async function request<T>(method: Method, path: string, schema: v.GenericSchema<unknown, T>): Promise<T> {
     try {
@@ -55,7 +57,7 @@ export function createAPIClient(config: Config): APIClient {
   async function send<T>(method: Method, path: string, schema: v.GenericSchema<unknown, T>): Promise<T> {
     logger.debug(`${method} ${path}`);
 
-    const res = await fetch(`${config.apiURL}${path}`, {
+    const res = await fetch(`${apiURL}${path}`, {
       method,
       signal: AbortSignal.timeout(TIMEOUT_MS),
     });
@@ -70,7 +72,7 @@ export function createAPIClient(config: Config): APIClient {
     async getAds(gameId) {
       const messages = await request('GET', `/${encodeURIComponent(gameId)}/messages`, v.array(RawMessageSchema));
 
-      return messages.map((message) => decryptMessage(message)).filter((ad) => ad !== undefined);
+      return messages.map((message) => decryptMessage(message, logger)).filter((ad) => ad !== undefined);
     },
     getShopItems(gameId) {
       return request('GET', `/${encodeURIComponent(gameId)}/shop`, v.array(ShopItemSchema));
@@ -93,6 +95,10 @@ export function createAPIClient(config: Config): APIClient {
       return request('POST', '/game/start', GameSchema);
     },
   };
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 function isRetryable(error: unknown) {

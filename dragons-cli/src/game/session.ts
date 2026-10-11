@@ -1,5 +1,5 @@
-import type { APIClient } from '../api/client.ts';
-import type { Message, ShopItem } from '../api/types.ts';
+import type { APIClient } from 'dragons-api/client';
+import type { Message, ShopItem } from 'dragons-api/types';
 import { logger } from '../logger.ts';
 
 export interface GameState {

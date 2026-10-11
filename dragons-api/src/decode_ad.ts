@@ -1,7 +1,6 @@
-import { logger } from '../logger.ts';
-import type { Message, RawMessage } from './types.ts';
+import type { Logger, Message, RawMessage } from './types.ts';
 
-export function decryptMessage(message: RawMessage): Message | undefined {
+export function decryptMessage(message: RawMessage, logger: Logger): Message | undefined {
   if (message.encrypted === null) {
     return {
       adId: message.adId,

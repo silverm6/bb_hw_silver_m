@@ -1,0 +1,26 @@
+{
+  "name": "dragons-api",
+  "private": true,
+  "type": "module",
+  "exports": {
+    "./client": "./src/client.ts",
+    "./error": "./src/error.ts",
+    "./types": "./src/types.ts"
+  },
+  "scripts": {
+    "lint": "oxlint",
+    "lint:fix": "oxlint --fix",
+    "fmt": "oxfmt --check",
+    "fmt:fix": "oxfmt",
+    "typecheck": "tsc --noEmit",
+    "check": "bun run lint && bun run fmt && bun run typecheck && bun test",
+    "fix": "bun run lint:fix && bun run fmt:fix"
+  },
+  "dependencies": {
+    "valibot": "^1.5.0"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "msw": "^2"
+  }
+}

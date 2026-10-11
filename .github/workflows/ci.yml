@@ -6,8 +6,12 @@ on:
 jobs:
   check:
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        package: [dragons-api, dragons-cli, dragons-web]
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
-      - run: bun run check
+      - run: bun run --cwd ${{ matrix.package }} check
