@@ -18,8 +18,9 @@ import {
   type SolveResult,
 } from './types.ts';
 
-const TIMEOUT_MS = 5_000;
-const RETRY_DELAY_MS = 500;
+const DEFAULT_TIMEOUT_MS = 5_000;
+const DEFAULT_MAX_RETRIES = 1;
+const DEFAULT_RETRY_DELAY_MS = 500;
 
 type Method = 'GET' | 'POST';
 
@@ -32,26 +33,43 @@ export interface APIClient {
   startGame(): Promise<Game>;
 }
 
+export interface RequestOptions {
+  timeoutMs?: number;
+  maxRetries?: number;
+  retryDelayMs?: number;
+}
+
 export interface APIClientOptions {
   apiURL: string;
   logger: Logger;
+  options?: RequestOptions;
 }
 
-export function createAPIClient({ apiURL, logger }: APIClientOptions): APIClient {
-  // One retry for GET requests in case of transient errors.
+export function createAPIClient({ apiURL, logger, options }: APIClientOptions): APIClient {
+  const timeoutMs = options?.timeoutMs ?? DEFAULT_TIMEOUT_MS;
+  const maxRetries = options?.maxRetries ?? DEFAULT_MAX_RETRIES;
+  const retryDelayMs = options?.retryDelayMs ?? DEFAULT_RETRY_DELAY_MS;
+
+  // Retries for GET requests in case of transient errors.
   async function request<T>(method: Method, path: string, schema: v.GenericSchema<unknown, T>): Promise<T> {
-    try {
-      return await send(method, path, schema);
-    } catch (error) {
-      if (method !== 'GET' || !isRetryable(error)) {
-        throw error;
-      }
-
-      logger.warn(`${method} ${path} failed (${error}), retrying...`);
-      await sleep(RETRY_DELAY_MS);
-
+    if (method !== 'GET') {
       return send(method, path, schema);
     }
+
+    for (let retry = 0; retry < maxRetries; retry++) {
+      try {
+        return await send(method, path, schema);
+      } catch (error) {
+        if (!isRetryable(error)) {
+          throw error;
+        }
+
+        logger.warn(`${method} ${path} failed (${error}), retrying...`);
+        await sleep(retryDelayMs);
+      }
+    }
+
+    return send(method, path, schema);
   }
 
   async function send<T>(method: Method, path: string, schema: v.GenericSchema<unknown, T>): Promise<T> {
@@ -59,7 +77,7 @@ export function createAPIClient({ apiURL, logger }: APIClientOptions): APIClient
 
     const res = await fetch(`${apiURL}${path}`, {
       method,
-      signal: AbortSignal.timeout(TIMEOUT_MS),
+      signal: AbortSignal.timeout(timeoutMs),
     });
     if (!res.ok) {
       throw new APIError(method, path, res.status);

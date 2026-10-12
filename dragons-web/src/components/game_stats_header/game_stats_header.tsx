@@ -16,9 +16,9 @@ export function GameStatsHeader() {
     { label: 'Gold', value: stats?.gold },
     { label: 'Level', value: stats?.level },
     { label: 'Turn', value: stats?.turn },
-    { label: 'People', value: reputation?.people },
-    { label: 'State', value: reputation?.state },
-    { label: 'Underworld', value: reputation?.underworld },
+    { label: 'People', value: round(reputation?.people) },
+    { label: 'State', value: round(reputation?.state) },
+    { label: 'Underworld', value: round(reputation?.underworld) },
   ];
 
   return (
@@ -41,4 +41,12 @@ export function GameStatsHeader() {
       </div>
     </div>
   );
+}
+
+function round(value: number | undefined) {
+  if (value === undefined) {
+    return;
+  }
+
+  return Math.round(value * 100) / 100;
 }

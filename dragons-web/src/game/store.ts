@@ -54,13 +54,10 @@ export const useGameStore = createGameStore((set, get) => ({
     set({ isPending: true });
     try {
       const reputation = await apiClient.investigateReputation(current.gameId);
-      const messages = await apiClient.getAds(current.gameId);
-
       const turn = current.turn + 1;
 
       set((state) => ({
         reputation,
-        messages,
         current: { ...current, turn },
         history: addToHistory(
           state.history,
@@ -68,6 +65,9 @@ export const useGameStore = createGameStore((set, get) => ({
           `Investigated reputation: people ${reputation.people}, state ${reputation.state}, underworld ${reputation.underworld}.`,
         ),
       }));
+
+      const messages = await apiClient.getAds(current.gameId);
+      set({ messages });
     } finally {
       set({ isPending: false });
     }
@@ -82,9 +82,7 @@ export const useGameStore = createGameStore((set, get) => ({
     set({ isPending: true });
     try {
       const result = await apiClient.solveMessage(current.gameId, adId);
-
       const isGameOver = result.lives <= 0;
-      const messages = isGameOver ? [] : await apiClient.getAds(current.gameId);
 
       set((state) => {
         const history = addToHistory(state.history, result.turn, result.message);
@@ -98,10 +96,12 @@ export const useGameStore = createGameStore((set, get) => ({
             highScore: result.highScore,
             turn: result.turn,
           },
-          messages,
           history: isGameOver ? addToHistory(history, result.turn, `Game over, final score ${result.score}.`) : history,
         };
       });
+
+      const messages = isGameOver ? [] : await apiClient.getAds(current.gameId);
+      set({ messages });
     } finally {
       set({ isPending: false });
     }
@@ -116,17 +116,18 @@ export const useGameStore = createGameStore((set, get) => ({
     set({ isPending: true });
     try {
       const result = await apiClient.purchaseItem(current.gameId, item.id);
-      const messages = await apiClient.getAds(current.gameId);
 
       set((state) => ({
         current: { ...current, gold: result.gold, lives: result.lives, level: result.level, turn: result.turn },
-        messages,
         history: addToHistory(
           state.history,
           result.turn,
           result.shoppingSuccess ? `Bought ${item.name}.` : `Couldn't buy ${item.name}.`,
         ),
       }));
+
+      const messages = await apiClient.getAds(current.gameId);
+      set({ messages });
     } finally {
       set({ isPending: false });
     }

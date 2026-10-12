@@ -2,15 +2,15 @@ import { describe, expect, it } from 'bun:test';
 
 import { http, HttpResponse } from 'msw';
 
-import { createAPIClient } from '../client.ts';
+import { createAPIClient, type RequestOptions } from '../client.ts';
 import { APIError } from '../error.ts';
 import { server } from '../mocks/server.ts';
 import { setupMockServer } from '../mocks/setup.ts';
 
 const API_URL = 'https://test.test/api/v2';
 
-function getAPIClient() {
-  return createAPIClient({ apiURL: API_URL, logger: console });
+function getAPIClient(options?: RequestOptions) {
+  return createAPIClient({ apiURL: API_URL, logger: console, options: { retryDelayMs: 0, ...options } });
 }
 
 describe('createAPIClient', () => {
@@ -206,6 +206,22 @@ describe('createAPIClient', () => {
 
     expect(client.startGame()).rejects.toBeInstanceOf(APIError);
     expect(calls).toBe(1);
+  });
+
+  it('getShopItems retries a GET up to maxRetries times', () => {
+    const client = getAPIClient({ maxRetries: 2 });
+    let calls = 0;
+
+    server.use(
+      http.get(`${API_URL}/game-1/shop`, () => {
+        calls++;
+
+        return new HttpResponse(null, { status: 500 });
+      }),
+    );
+
+    expect(client.getShopItems('game-1')).rejects.toBeInstanceOf(APIError);
+    expect(calls).toBe(3);
   });
 });
 
