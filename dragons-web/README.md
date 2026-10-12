@@ -4,6 +4,8 @@ React UI for playing in the browser.
 
 Tech stack: React 19, Vite, TS, Zustand
 
+Live at [https://silverm6.github.io/bb_hw_silver_m/](https://silverm6.github.io/bb_hw_silver_m/), deployed to GitHub Pages.
+
 ## Running locally
 
 ### Docker
