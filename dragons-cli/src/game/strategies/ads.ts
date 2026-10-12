@@ -1,4 +1,5 @@
 import type { Message } from 'dragons-api/types';
+
 import type { AdStrategy } from '../strategy.ts';
 
 function pickLowestReward(ads: Message[]) {

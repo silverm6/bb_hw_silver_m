@@ -77,7 +77,6 @@ export function createAPIClient({ apiURL, logger }: APIClientOptions): APIClient
     getShopItems(gameId) {
       return request('GET', `/${encodeURIComponent(gameId)}/shop`, v.array(ShopItemSchema));
     },
-    // TODO: unused, either use it or delete it.
     investigateReputation(gameId) {
       return request('POST', `/${encodeURIComponent(gameId)}/investigate/reputation`, ReputationSchema);
     },

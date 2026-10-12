@@ -1,0 +1,22 @@
+.list {
+  padding: 0;
+  list-style: none;
+}
+
+.row {
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px solid #eee;
+}
+
+.messageDetails {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.messageInfo {
+  font-size: 13px;
+}

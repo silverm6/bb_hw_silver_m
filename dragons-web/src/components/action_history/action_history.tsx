@@ -1,10 +1,10 @@
-import type { HistoryEntry } from '@/game/types';
+import { useGameStore } from '../../game/store';
 
-interface ActionHistoryProps {
-  entries: HistoryEntry[];
-}
+import styles from './action_history.module.css';
 
-export function ActionHistory({ entries }: ActionHistoryProps) {
+export function ActionHistory() {
+  const entries = useGameStore((state) => state.history);
+
   if (entries.length === 0) {
     return <p>Nothing happened yet</p>;
   }
@@ -12,9 +12,9 @@ export function ActionHistory({ entries }: ActionHistoryProps) {
   return (
     <ul>
       {entries.map((entry) => (
-        <li key={entry.id}>
+        <li key={entry.id} className={styles.row}>
+          <span className={styles.turn}>Turn {entry.turn}</span>
           <span>{entry.text}</span>
-          <small>turn {entry.turn}</small>
         </li>
       ))}
     </ul>

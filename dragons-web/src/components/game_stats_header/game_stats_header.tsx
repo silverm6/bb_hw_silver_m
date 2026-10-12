@@ -1,25 +1,33 @@
-import type { Game } from 'dragons-api/types';
+import clsx from 'clsx';
 
-import styles from './game_stats_header.module.css';
+import { useGameStore } from '../../game/store';
+import { InvestigateButton } from './investigate_button';
 import { NewGameButton } from './new_game_button';
 
-interface GameStatsHeaderProps {
-  stats?: Game;
-}
+import styles from './game_stats_header.module.css';
 
-export function GameStatsHeader({ stats }: GameStatsHeaderProps) {
+export function GameStatsHeader() {
+  const stats = useGameStore((state) => state.current);
+  const reputation = useGameStore((state) => state.reputation);
+
   const statFields = [
+    { label: 'Score', value: stats?.score },
     { label: 'Lives', value: stats?.lives },
     { label: 'Gold', value: stats?.gold },
     { label: 'Level', value: stats?.level },
-    { label: 'Score', value: stats?.score },
-    { label: 'High score', value: stats?.highScore },
     { label: 'Turn', value: stats?.turn },
+    { label: 'People', value: reputation?.people },
+    { label: 'State', value: reputation?.state },
+    { label: 'Underworld', value: reputation?.underworld },
   ];
 
   return (
-    <header className={styles.header}>
+    <div className={styles.header}>
       <div className={styles.stats}>
+        <div className={clsx(styles.stat, styles.gameId)}>
+          <span className={styles.label}>Game ID</span>
+          <span className={styles.value}>{stats?.gameId ?? '-'}</span>
+        </div>
         {statFields.map((field) => (
           <div key={field.label} className={styles.stat}>
             <span className={styles.label}>{field.label}</span>
@@ -27,7 +35,10 @@ export function GameStatsHeader({ stats }: GameStatsHeaderProps) {
           </div>
         ))}
       </div>
-      <NewGameButton hasGame={stats !== undefined} />
-    </header>
+      <div className={styles.actions}>
+        <InvestigateButton />
+        <NewGameButton />
+      </div>
+    </div>
   );
 }

@@ -1,18 +1,17 @@
-import type { Message as MessageData } from 'dragons-api/types';
-
+import { useGameStore } from '../../game/store';
 import { Message } from './message';
 
-interface MessageListProps {
-  messages: MessageData[];
-}
+import styles from './message_list.module.css';
 
-export function MessageList({ messages }: MessageListProps) {
+export function MessageList() {
+  const messages = useGameStore((state) => state.messages);
+
   if (messages.length === 0) {
     return <p>No messages</p>;
   }
 
   return (
-    <ul>
+    <ul className={styles.list}>
       {messages.map((message) => (
         <Message key={message.adId} message={message} />
       ))}

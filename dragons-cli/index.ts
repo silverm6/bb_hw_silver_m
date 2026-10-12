@@ -1,6 +1,7 @@
 import { parseArgs } from 'node:util';
 
 import { createAPIClient } from 'dragons-api/client';
+
 import { loadConfig } from './src/config.ts';
 import { gameLoop } from './src/game/play.ts';
 import { startGameSession } from './src/game/session.ts';

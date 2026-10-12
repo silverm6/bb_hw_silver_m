@@ -15,9 +15,11 @@
     "fix": "bun run lint:fix && bun run fmt:fix"
   },
   "dependencies": {
+    "clsx": "^2.1.1",
     "dragons-api": "workspace:*",
     "react": "^19.3.0",
-    "react-dom": "^19.3.0"
+    "react-dom": "^19.3.0",
+    "zustand": "^5.0.15"
   },
   "devDependencies": {
     "@types/react": "^19.3.0",

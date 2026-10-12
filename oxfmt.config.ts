@@ -10,4 +10,5 @@ export default defineConfig({
   useTabs: false,
   semi: true,
   arrowParens: 'always',
+  sortImports: true,
 });

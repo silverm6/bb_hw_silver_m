@@ -1,7 +1,13 @@
-interface NewGameButtonProps {
-  hasGame: boolean;
-}
+import { useGameStore } from '../../game/store';
 
-export function NewGameButton({ hasGame }: NewGameButtonProps) {
-  return <button type="button">{hasGame ? 'New game' : 'Start game'}</button>;
+export function NewGameButton() {
+  const startGame = useGameStore((state) => state.startGame);
+  const isPending = useGameStore((state) => state.isPending);
+  const gameInProgress = useGameStore((state) => state.current !== undefined);
+
+  return (
+    <button type="button" disabled={isPending} onClick={startGame}>
+      {gameInProgress ? 'New game' : 'Start game'}
+    </button>
+  );
 }

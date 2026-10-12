@@ -1,10 +1,11 @@
 import { describe, expect, it } from 'bun:test';
+
 import { http, HttpResponse } from 'msw';
 
-import { server } from '../mocks/server.ts';
-import { setupMockServer } from '../mocks/setup.ts';
 import { createAPIClient } from '../client.ts';
 import { APIError } from '../error.ts';
+import { server } from '../mocks/server.ts';
+import { setupMockServer } from '../mocks/setup.ts';
 
 const API_URL = 'https://test.test/api/v2';
 
