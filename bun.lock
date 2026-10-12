@@ -10,17 +10,7 @@
         "typescript": "^7",
       },
     },
-    "dragons-api": {
-      "name": "dragons-api",
-      "dependencies": {
-        "valibot": "^1.5.0",
-      },
-      "devDependencies": {
-        "@types/bun": "latest",
-        "msw": "^2",
-      },
-    },
-    "dragons-cli": {
+    "apps/dragons-cli": {
       "name": "dragons-cli",
       "dependencies": {
         "consola": "^3.4.2",
@@ -30,7 +20,7 @@
         "@types/bun": "latest",
       },
     },
-    "dragons-web": {
+    "apps/dragons-web": {
       "name": "dragons-web",
       "version": "0.1.0",
       "dependencies": {
@@ -53,6 +43,16 @@
         "@vitejs/plugin-react": "^6.1.2",
         "msw": "^2",
         "vite": "^8.3.4",
+      },
+    },
+    "packages/dragons-api": {
+      "name": "dragons-api",
+      "dependencies": {
+        "valibot": "^1.5.0",
+      },
+      "devDependencies": {
+        "@types/bun": "latest",
+        "msw": "^2",
       },
     },
   },
@@ -299,11 +299,11 @@
 
     "dom-accessibility-api": ["dom-accessibility-api@0.6.3", "", {}, "sha512-7ZgogeTnjuHbo+ct10G9Ffp0mif17idi0IyWNVA/wcwcm7NPOD/WEHVP3n7n3MhXqxoIYm8d6MuZohYWIZ4T3w=="],
 
-    "dragons-api": ["dragons-api@workspace:dragons-api"],
+    "dragons-api": ["dragons-api@workspace:packages/dragons-api"],
 
-    "dragons-cli": ["dragons-cli@workspace:dragons-cli"],
+    "dragons-cli": ["dragons-cli@workspace:apps/dragons-cli"],
 
-    "dragons-web": ["dragons-web@workspace:dragons-web"],
+    "dragons-web": ["dragons-web@workspace:apps/dragons-web"],
 
     "emoji-regex": ["emoji-regex@8.0.0", "", {}, "sha512-MSjYzcWNOA0ewAHpz0MxpYFvwg6yjy1NG3xteoqz644VCo/RPgnr1/GGt+ic3iJTzQ8Eu3TdM14SawnVUmGE6A=="],
 
@@ -469,10 +469,6 @@
 
     "@testing-library/dom/dom-accessibility-api": ["dom-accessibility-api@0.5.16", "", {}, "sha512-X7BJ2yElsnOJ30pZF4uIIDfBEVgF4XEBxL9Bxhy6dnrm5hkzqmsWHGTiHqRiITNhMyFLyAiWndIJP7Z1NTteDg=="],
 
-    "dragons-cli/@types/bun": ["@types/bun@1.4.2", "", { "dependencies": { "bun-types": "1.4.2" } }, "sha512-GimotNn7+ZV0uVArItBbriZsR1oNf0+WTzPkdcFrzShI7k2norL0uzEaJT8T33dWr7O/c9ZDuAFQrctKCi72oQ=="],
-
     "wrap-ansi/ansi-styles": ["ansi-styles@4.3.0", "", { "dependencies": { "color-convert": "^2.0.1" } }, "sha512-zbB9rCJAT1rbjiVDb2hqKFHNYLxgtk8NURxZ3IZwD3F6NtxbXZQCnnSi1Lkx+IDohdPlFp222wVALIheZJQSEg=="],
-
-    "dragons-cli/@types/bun/bun-types": ["bun-types@1.4.2", "", { "dependencies": { "@types/node": "*" } }, "sha512-bxV1FgK7yBIzjRe5zBozIM4Bem11ZJcCXSrjWRG3YWLt8yFDePu4cLjpebO8OvPeIE9trbyPF4fuj3Cia4Fj3w=="],
   }
 }

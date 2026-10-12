@@ -8,10 +8,10 @@ Tech stack: Bun, TS
 
 ### Docker
 
-Run from this folder. The build uses the repo root (`..`) as its context, since the image needs the shared `bun.lock` and `dragons-api`:
+Requires Docker. Run from this folder. The build uses the repo root (`../..`) as its context, since the image needs the shared `bun.lock` and `dragons-api`:
 
 ```bash
-$ docker build -f Dockerfile -t dragons-cli ..
+$ docker build -f Dockerfile -t dragons-cli ../..
 ```
 
 ```bash

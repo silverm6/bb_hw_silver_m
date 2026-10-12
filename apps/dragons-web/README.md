@@ -10,10 +10,10 @@ Live at [https://silverm6.github.io/bb_hw_silver_m/](https://silverm6.github.io/
 
 ### Docker
 
-Run from this folder. The build uses the repo root (`..`) as its context, since the image needs the shared `bun.lock` and `dragons-api`:
+Requires Docker. Run from this folder. The build uses the repo root (`../..`) as its context, since the image needs the shared `bun.lock` and `dragons-api`:
 
 ```bash
-$ docker build -f Dockerfile -t dragons-web ..
+$ docker build -f Dockerfile -t dragons-web ../..
 ```
 
 ```bash

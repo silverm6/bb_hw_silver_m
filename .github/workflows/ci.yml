@@ -9,7 +9,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: [dragons-api, dragons-cli, dragons-web]
+        package: [packages/dragons-api, apps/dragons-cli, apps/dragons-web]
     steps:
       - uses: actions/checkout@v4
       - uses: oven-sh/setup-bun@v2
@@ -23,5 +23,5 @@ jobs:
       - uses: oven-sh/setup-bun@v2
       - run: bun install --frozen-lockfile
       - run: bunx playwright install --with-deps chromium
-        working-directory: dragons-web
-      - run: bun run --cwd dragons-web test:e2e
+        working-directory: apps/dragons-web
+      - run: bun run --cwd apps/dragons-web test:e2e
