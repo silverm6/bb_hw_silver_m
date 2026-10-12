@@ -14,7 +14,7 @@ export function ShopItem({ item, disabled }: ShopItemProps) {
 
   return (
     <li className={styles.row}>
-      <button type="button" disabled={disabled} onClick={() => buyItem(item)}>
+      <button type="button" aria-label={`Buy ${item.name}`} disabled={disabled} onClick={() => buyItem(item)}>
         Buy
       </button>
       <span>{item.name}</span>

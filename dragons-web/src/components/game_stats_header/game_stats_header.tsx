@@ -26,12 +26,16 @@ export function GameStatsHeader() {
       <div className={styles.stats}>
         <div className={clsx(styles.stat, styles.gameId)}>
           <span className={styles.label}>Game ID</span>
-          <span className={styles.value}>{stats?.gameId ?? '-'}</span>
+          <span className={styles.value} data-testid="stat-game-id">
+            {stats?.gameId ?? '-'}
+          </span>
         </div>
         {statFields.map((field) => (
           <div key={field.label} className={styles.stat}>
             <span className={styles.label}>{field.label}</span>
-            <span className={styles.value}>{field.value ?? '-'}</span>
+            <span className={styles.value} data-testid={`stat-${field.label.toLowerCase()}`}>
+              {field.value ?? '-'}
+            </span>
           </div>
         ))}
       </div>

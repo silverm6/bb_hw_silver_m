@@ -19,7 +19,11 @@ export function Message({ message }: MessageProps) {
         <span className={styles.messageInfo}>
           {message.reward} gold · expires in {message.expiresIn} · {message.probability}
         </span>
-        <button type="button" disabled={isPending} onClick={() => solveMessage(message.adId)}>
+        <button
+          type="button"
+          aria-label={`Solve ${message.message}`}
+          disabled={isPending}
+          onClick={() => solveMessage(message.adId)}>
           Solve
         </button>
       </div>

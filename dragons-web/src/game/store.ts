@@ -1,4 +1,5 @@
 import type { Game, Message, Reputation, ShopItem } from 'dragons-api/types';
+import { toast } from 'sonner';
 import { create } from 'zustand';
 
 import { apiClient } from '../api/client';
@@ -40,6 +41,8 @@ export const useGameStore = createGameStore((set, get) => ({
       ]);
 
       set({ current, reputation: undefined, messages, shopItems, history: [] });
+    } catch {
+      toast.error("Couldn't start a new game");
     } finally {
       set({ isPending: false });
     }
@@ -68,6 +71,8 @@ export const useGameStore = createGameStore((set, get) => ({
 
       const messages = await apiClient.getAds(current.gameId);
       set({ messages });
+    } catch {
+      toast.error('Something went wrong');
     } finally {
       set({ isPending: false });
     }
@@ -96,12 +101,17 @@ export const useGameStore = createGameStore((set, get) => ({
             highScore: result.highScore,
             turn: result.turn,
           },
+          messages: isGameOver ? [] : state.messages,
           history: isGameOver ? addToHistory(history, result.turn, `Game over, final score ${result.score}.`) : history,
         };
       });
 
-      const messages = isGameOver ? [] : await apiClient.getAds(current.gameId);
-      set({ messages });
+      if (!isGameOver) {
+        const messages = await apiClient.getAds(current.gameId);
+        set({ messages });
+      }
+    } catch {
+      toast.error('Something went wrong');
     } finally {
       set({ isPending: false });
     }
@@ -128,6 +138,8 @@ export const useGameStore = createGameStore((set, get) => ({
 
       const messages = await apiClient.getAds(current.gameId);
       set({ messages });
+    } catch {
+      toast.error('Something went wrong');
     } finally {
       set({ isPending: false });
     }
