@@ -2,7 +2,6 @@
   "name": "dragons-cli",
   "private": true,
   "type": "module",
-  "module": "index.ts",
   "scripts": {
     "start": "bun index.ts",
     "lint": "oxlint",
@@ -18,6 +17,6 @@
     "dragons-api": "workspace:*"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "catalog:"
   }
 }

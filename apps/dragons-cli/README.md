@@ -23,6 +23,7 @@ $ docker run --rm -t dragons-cli
 To run locally you need [Bun](https://bun.com/docs/installation) 1.4.3 or newer. Then, from this folder:
 
 ```bash
+$ cp .env.example .env
 $ bun install
 $ bun start
 ```
@@ -31,7 +32,7 @@ $ bun start
 
 | Flag     | Values                                  | Default   |
 | -------- | --------------------------------------- | --------- |
-| `--ads`  | `optimal`, `cheapest`, `most-expensive` | `optimal` |
+| `--ads`  | `easiest`, `cheapest`, `most-expensive` | `easiest` |
 | `--shop` | `optimal`, `cheapest`, `most-expensive` | `optimal` |
 
 With Docker, put the flags after the image name:

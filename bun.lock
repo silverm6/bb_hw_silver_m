@@ -17,7 +17,7 @@
         "dragons-api": "workspace:*",
       },
       "devDependencies": {
-        "@types/bun": "latest",
+        "@types/bun": "catalog:",
       },
     },
     "apps/dragons-web": {
@@ -37,11 +37,11 @@
         "@testing-library/jest-dom": "^7.0.1",
         "@testing-library/react": "^16.3.3",
         "@testing-library/user-event": "^14.6.7",
-        "@types/bun": "latest",
+        "@types/bun": "catalog:",
         "@types/react": "^19.3.0",
         "@types/react-dom": "^19.3.0",
         "@vitejs/plugin-react": "^6.1.2",
-        "msw": "^2",
+        "msw": "catalog:",
         "vite": "^8.3.4",
       },
     },
@@ -51,10 +51,14 @@
         "valibot": "^1.5.0",
       },
       "devDependencies": {
-        "@types/bun": "latest",
-        "msw": "^2",
+        "@types/bun": "catalog:",
+        "msw": "catalog:",
       },
     },
+  },
+  "catalog": {
+    "@types/bun": "^1.4.3",
+    "msw": "^2.15.0",
   },
   "packages": {
     "@adobe/css-tools": ["@adobe/css-tools@4.5.0", "", {}, "sha512-6OzddxPio9UiWTCemp4N8cYLV2ZN1ncRnV1cVGtve7dhPOtRkleRyx32GQCYSwDYgaHU3USMm84tNsvKzRCa1Q=="],

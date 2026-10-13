@@ -1,7 +1,10 @@
 import { HEALING_POTION_API_ID, type ShopItem } from 'dragons-api/types';
 
 import type { GameState } from '../session.ts';
-import type { ShopStrategy } from '../strategy.ts';
+
+export interface ShopStrategy {
+  (items: ShopItem[], state: GameState): ShopItem | undefined;
+}
 
 function pickCheapestItem(items: ShopItem[], state: GameState) {
   return items

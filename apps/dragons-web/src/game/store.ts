@@ -1,3 +1,4 @@
+import { decryptMessages } from 'dragons-api/decode_ad';
 import type { Game, Message, Reputation, ShopItem } from 'dragons-api/types';
 import { toast } from 'sonner';
 import { create } from 'zustand';
@@ -36,7 +37,7 @@ export const useGameStore = createGameStore((set, get) => ({
     try {
       const current = await apiClient.startGame();
       const [messages, shopItems] = await Promise.all([
-        apiClient.getAds(current.gameId),
+        getMessages(current.gameId),
         apiClient.getShopItems(current.gameId),
       ]);
 
@@ -69,7 +70,7 @@ export const useGameStore = createGameStore((set, get) => ({
         ),
       }));
 
-      const messages = await apiClient.getAds(current.gameId);
+      const messages = await getMessages(current.gameId);
       set({ messages });
     } catch {
       toast.error('Something went wrong');
@@ -107,7 +108,7 @@ export const useGameStore = createGameStore((set, get) => ({
       });
 
       if (!isGameOver) {
-        const messages = await apiClient.getAds(current.gameId);
+        const messages = await getMessages(current.gameId);
         set({ messages });
       }
     } catch {
@@ -136,7 +137,7 @@ export const useGameStore = createGameStore((set, get) => ({
         ),
       }));
 
-      const messages = await apiClient.getAds(current.gameId);
+      const messages = await getMessages(current.gameId);
       set({ messages });
     } catch {
       toast.error('Something went wrong');
@@ -145,6 +146,10 @@ export const useGameStore = createGameStore((set, get) => ({
     }
   },
 }));
+
+async function getMessages(gameId: string) {
+  return decryptMessages(await apiClient.getAds(gameId), console);
+}
 
 function addToHistory(history: HistoryEntry[], turn: number, text: string) {
   return [{ id: history.length, turn, text }, ...history];

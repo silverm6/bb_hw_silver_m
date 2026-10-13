@@ -11,7 +11,7 @@ import { logger } from './src/logger.ts';
 
 const { values: args } = parseArgs({
   options: {
-    ads: { type: 'string', default: 'optimal' },
+    ads: { type: 'string', default: 'easiest' },
     shop: { type: 'string', default: 'optimal' },
   },
 });

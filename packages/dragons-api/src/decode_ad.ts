@@ -1,5 +1,9 @@
 import type { Logger, Message, RawMessage } from './types.ts';
 
+export function decryptMessages(messages: RawMessage[], logger: Logger): Message[] {
+  return messages.map((message) => decryptMessage(message, logger)).filter((message) => message !== undefined);
+}
+
 export function decryptMessage(message: RawMessage, logger: Logger): Message | undefined {
   if (message.encrypted === null) {
     return {

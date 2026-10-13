@@ -37,85 +37,26 @@ describe('createAPIClient', () => {
     expect(await client.startGame()).toEqual(game);
   });
 
-  it('getAds correctly calls the messages endpoint and returns unencrypted ads as-is', async () => {
+  it('getAds correctly calls the messages endpoint and returns messages as-is', async () => {
     const client = getAPIClient();
-
-    server.use(
-      http.get(`${API_URL}/game-1/messages`, () => {
-        return HttpResponse.json([
-          {
-            adId: 'ad-1',
-            message: 'Help defend Sheep',
-            reward: 10,
-            expiresIn: 7,
-            encrypted: null,
-            probability: 'Piece of cake',
-          },
-        ]);
-      }),
-    );
-
-    expect(await client.getAds('game-1')).toEqual([
+    const messages = [
       {
-        adId: 'ad-1',
-        message: 'Help defend Sheep',
-        reward: 10,
-        expiresIn: 7,
-        probability: 'Piece of cake',
-      },
-    ]);
-  });
-
-  it('getAds decodes base64 and ROT13 encrypted ads and skips unknown encryptions', async () => {
-    const client = getAPIClient();
-
-    server.use(
-      http.get(`${API_URL}/game-1/messages`, () => {
-        return HttpResponse.json([
-          {
-            adId: encodeBase64('ad-1'),
-            message: encodeBase64('Help defend Sheep'),
-            reward: 10,
-            expiresIn: 7,
-            encrypted: 1,
-            probability: encodeBase64('Piece of cake'),
-          },
-          {
-            adId: 'nq-2',
-            message: 'Fgrny fbzr tbyq',
-            reward: 20,
-            expiresIn: 5,
-            encrypted: 2,
-            probability: 'Fhvpvqr zvffvba',
-          },
-          {
-            adId: 'ad-3',
-            message: 'Unknown',
-            reward: 30,
-            expiresIn: 3,
-            encrypted: 3,
-            probability: 'Unknown',
-          },
-        ]);
-      }),
-    );
-
-    expect(await client.getAds('game-1')).toEqual([
-      {
-        adId: 'ad-1',
-        message: 'Help defend Sheep',
-        reward: 10,
-        expiresIn: 7,
-        probability: 'Piece of cake',
-      },
-      {
-        adId: 'ad-2',
-        message: 'Steal some gold',
+        adId: 'nq-1',
+        message: 'Fgrny fbzr tbyq',
         reward: 20,
         expiresIn: 5,
-        probability: 'Suicide mission',
+        encrypted: 2,
+        probability: 'Fhvpvqr zvffvba',
       },
-    ]);
+    ];
+
+    server.use(
+      http.get(`${API_URL}/game-1/messages`, () => {
+        return HttpResponse.json(messages);
+      }),
+    );
+
+    expect(await client.getAds('game-1')).toEqual(messages);
   });
 
   it('solveMessage correctly calls the solve endpoint', async () => {
@@ -224,7 +165,3 @@ describe('createAPIClient', () => {
     expect(calls).toBe(3);
   });
 });
-
-function encodeBase64(value: string) {
-  return new TextEncoder().encode(value).toBase64();
-}

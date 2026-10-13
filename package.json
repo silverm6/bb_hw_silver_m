@@ -1,11 +1,17 @@
 {
   "name": "dom",
   "private": true,
-  "workspaces": [
-    "packages/dragons-api",
-    "apps/dragons-cli",
-    "apps/dragons-web"
-  ],
+  "workspaces": {
+    "packages": [
+      "packages/dragons-api",
+      "apps/dragons-cli",
+      "apps/dragons-web"
+    ],
+    "catalog": {
+      "@types/bun": "^1.4.3",
+      "msw": "^2.15.0"
+    }
+  },
   "type": "module",
   "scripts": {
     "lint": "bun run --workspaces lint",

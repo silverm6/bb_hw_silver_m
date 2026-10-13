@@ -1,6 +1,7 @@
 import { logger } from '../logger.ts';
 import type { GameSession } from './session.ts';
-import type { AdStrategy, ShopStrategy } from './strategy.ts';
+import type { AdStrategy } from './strategies/ads.ts';
+import type { ShopStrategy } from './strategies/items.ts';
 
 export async function gameLoop(session: GameSession, adStrategy: AdStrategy, shopStrategy: ShopStrategy) {
   const items = await session.shop();
@@ -10,10 +11,10 @@ export async function gameLoop(session: GameSession, adStrategy: AdStrategy, sho
     const { turn, lives, gold, score, level } = session.state();
     logger.info(`Turn ${turn}: ${lives} lives, ${gold}g, score ${score}, level ${level}`);
 
-    const item = shopStrategy(items, session.state());
-    if (item !== undefined) {
-      const bought = await session.buy(item.id);
-      logger.info(`${bought ? 'Bought' : 'Failed to buy'} ${item.name} for ${item.cost}g`);
+    const chosenItem = shopStrategy(items, session.state());
+    if (chosenItem !== undefined) {
+      const bought = await session.buy(chosenItem.id);
+      logger.info(`${bought ? 'Bought' : 'Failed to buy'} ${chosenItem.name} for ${chosenItem.cost}g`);
     }
 
     const ads = await session.ads();
@@ -21,12 +22,12 @@ export async function gameLoop(session: GameSession, adStrategy: AdStrategy, sho
       logger.info(`${ad.reward}g, ${ad.probability}, expires in ${ad.expiresIn}: ${ad.message}`);
     }
 
-    const ad = adStrategy(ads, session.state());
-    if (ad !== undefined) {
-      logger.info(`Solving "${ad.message}" for ${ad.reward}g (${ad.probability})`);
+    const chosenAd = adStrategy(ads, session.state());
+    if (chosenAd !== undefined) {
+      logger.info(`Solving "${chosenAd.message}" for ${chosenAd.reward}g (${chosenAd.probability})`);
 
-      const message = await session.solve(ad.adId);
-      logger.info(message);
+      const solveResult = await session.solve(chosenAd.adId);
+      logger.info(solveResult);
     }
 
     // To prevent infinite loops; in case for some reason there are no ads to solve.

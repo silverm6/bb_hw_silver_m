@@ -1,6 +1,5 @@
 import * as v from 'valibot';
 
-import { decryptMessage } from './decode_ad.ts';
 import { APIError } from './error.ts';
 import {
   GameSchema,
@@ -11,8 +10,8 @@ import {
   SolveResultSchema,
   type Game,
   type Logger,
-  type Message,
   type PurchaseResult,
+  type RawMessage,
   type Reputation,
   type ShopItem,
   type SolveResult,
@@ -25,7 +24,7 @@ const DEFAULT_RETRY_DELAY_MS = 500;
 type Method = 'GET' | 'POST';
 
 export interface APIClient {
-  getAds(gameId: string): Promise<Message[]>;
+  getAds(gameId: string): Promise<RawMessage[]>;
   getShopItems(gameId: string): Promise<ShopItem[]>;
   investigateReputation(gameId: string): Promise<Reputation>;
   purchaseItem(gameId: string, itemId: string): Promise<PurchaseResult>;
@@ -83,14 +82,13 @@ export function createAPIClient({ apiURL, logger, options }: APIClientOptions): 
       throw new APIError(method, path, res.status);
     }
 
-    return v.parse(schema, await res.json());
+    const body = await res.json();
+    return v.parse(schema, body);
   }
 
   return {
-    async getAds(gameId) {
-      const messages = await request('GET', `/${encodeURIComponent(gameId)}/messages`, v.array(RawMessageSchema));
-
-      return messages.map((message) => decryptMessage(message, logger)).filter((ad) => ad !== undefined);
+    getAds(gameId) {
+      return request('GET', `/${encodeURIComponent(gameId)}/messages`, v.array(RawMessageSchema));
     },
     getShopItems(gameId) {
       return request('GET', `/${encodeURIComponent(gameId)}/shop`, v.array(ShopItemSchema));
@@ -114,10 +112,6 @@ export function createAPIClient({ apiURL, logger, options }: APIClientOptions): 
   };
 }
 
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 function isRetryable(error: unknown) {
   if (error instanceof APIError) {
     return error.status >= 500;
@@ -127,4 +121,8 @@ function isRetryable(error: unknown) {
   }
 
   return true;
+}
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
 }

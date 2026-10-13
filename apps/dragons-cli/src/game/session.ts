@@ -1,4 +1,5 @@
 import type { APIClient } from 'dragons-api/client';
+import { decryptMessages } from 'dragons-api/decode_ad';
 import type { Message, ShopItem } from 'dragons-api/types';
 
 import { logger } from '../logger.ts';
@@ -38,8 +39,8 @@ export async function startGameSession(client: APIClient): Promise<GameSession> 
     state() {
       return { ...state };
     },
-    ads() {
-      return client.getAds(game.gameId);
+    async ads() {
+      return decryptMessages(await client.getAds(game.gameId), logger);
     },
     shop() {
       return client.getShopItems(game.gameId);
